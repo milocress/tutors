@@ -25,6 +25,7 @@
 * `/match` (described below)
 
 ## Schemas
+* `Subject` describes the possible subjects a student and tutor can discuss during a session.
 * `Student` describes student properties
 * `Tutor` describes tutor properties
 * `TutorSession` describes session properties, outcomes like rating, etc.
