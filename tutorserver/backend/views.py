@@ -1,11 +1,13 @@
 from django.http import HttpResponse
 
 from backend.models import Student, Tutor, Subject, SessionRequest
+from django.contrib.auth.decorators import login_required
 
 def root_view(request):
     print(Student.objects.all())
     return HttpResponse("Index page")
 
+@login_required
 def student_view(request):
     response = HttpResponse(content_type="text/plain")
     default_student = Student.objects.get(name="Milo Cress")
@@ -19,6 +21,7 @@ def student_view(request):
     response.write('<button>Request</button> \n')
     return response
 
+@login_required
 def tutor_view(request):
     response = HttpResponse(content_type="text/plain")
     default_tutor = Tutor.objects.get(name="Teddy Schoenfeld")
