@@ -1,0 +1,34 @@
+<head>
+<title>Student View</title>
+</head>
+
+<body>
+
+<h1>Active Requests</h1>
+
+<ul>
+{%for request in active_requests %}
+  <li>{{ request }}</li>
+
+{% endfor %}
+</ul>
+
+<h1>Create a request</h1>
+
+<form action="/student/" method="post">
+    {% csrf_token %}
+    {{ form }}
+    <input type="submit" value="Request">
+</form>
+
+
+<h1>Past Sessions</h1>
+
+<ul>
+{%for session in past_sessions %}
+  <li>{{ session }}</li>
+
+{% endfor %}
+</ul>
+
+</body>

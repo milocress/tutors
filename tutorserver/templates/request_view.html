@@ -1,0 +1,16 @@
+<head>
+<title>View Request</title>
+</head>
+
+<body>
+
+<h1>Available Tutors</h1>
+<p>clicking on any of these puts you in the room for the tutor.</p>
+<ul>
+{%for tutor in available_tutors %}
+<li><a href="https://127.0.0.1/tutor_{{tutor.id}}">{{tutor.name}}</a></li>
+
+{% endfor %}
+</ul>
+
+</body>

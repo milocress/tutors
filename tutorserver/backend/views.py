@@ -1,36 +1,80 @@
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 
 from backend.models import Student, Tutor, Subject, SessionRequest
 from django.contrib.auth.decorators import login_required
+from django.shortcuts import render
+
+from .forms import SessionForm
+
 
 def root_view(request):
     print(Student.objects.all())
     return HttpResponse("Index page")
 
+
 @login_required
 def student_view(request):
-    response = HttpResponse(content_type="text/plain")
-    default_student = Student.objects.get(name="Milo Cress")
-    default_subject = Subject.objects.get(name="Default Subject")
+    student = request.user.student.all()[0]
 
-    response.write('Student view \n')
+    if request.method == 'POST':
+        form = SessionForm(request.POST)
 
-    response.write('<h1>Sessions</h1> \n')
-    response.write(str(default_student.student_sessions.all().values()) + '\n')
-    response.write('<h1>New Session</h1> \n')
-    response.write('<button>Request</button> \n')
-    return response
+        if form.is_valid():
+            subject = Subject.objects.get(name=form.cleaned_data['subject'])
+            sr = SessionRequest(subject=subject
+                                , student=student
+                                , active=True)
+            sr.save()
+
+            return HttpResponseRedirect(f'/request/{sr.pk}')
+
+    else:
+        form = SessionForm()
+
+    past_sessions = student.student_sessions.all().values()
+
+    active_requests = student.student_session_requests.all().values()
+    return render(request, 'student_view.html',
+                  {
+                      'past_sessions': past_sessions,
+                      'active_requests': active_requests,
+                      'student': student,
+                      'form': form
+                  })
+
+
+@login_required
+def request_view(request, rid):
+    req = SessionRequest.objects.get(pk=rid)
+
+    return render(request, 'request_view.html',
+                  {
+                      'available_tutors': req.accepted_tutors.all()
+                  })
+
+
+@login_required
+def accept_request_view(request, rid):
+    req = SessionRequest.objects.get(pk=rid)
+    student = req.student.name
+    subject = req.subject.name
+
+    tutor = request.user.tutor.all()[0]
+
+    req.accepted_tutors.add(tutor)
+
+    return HttpResponse(f"{req}, requesting student={student}, subject={subject}")
+
 
 @login_required
 def tutor_view(request):
     response = HttpResponse(content_type="text/plain")
-    default_tutor = Tutor.objects.get(name="Teddy Schoenfeld")
+    tutor = request.user.tutor.all()[0]
 
-    response.write('Tutor view \n')
-    response.write('<h1>Past Sessions</h1> \n')
-    response.write(str(default_tutor.tutor_sessions.all().values()) + '\n')
-    response.write('<h1>Available Sessions</h1> \n')
-    response.write(str(SessionRequest.objects.all().values()) + '\n')
-    
-    return response
+    active_requests = SessionRequest.objects.all().values()
 
+    return render(request, 'tutor_view.html',
+                  {
+                      'active_requests': active_requests,
+                      'tutor': tutor
+                  })
