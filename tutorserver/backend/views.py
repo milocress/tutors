@@ -49,7 +49,8 @@ def request_view(request, rid):
 
     return render(request, 'request_view.html',
                   {
-                      'available_tutors': req.accepted_tutors.all()
+                      'available_tutors': req.accepted_tutors.all(),
+                      'price': 1
                   })
 
 
