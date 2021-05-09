@@ -1,0 +1,16 @@
+<head>
+<title>Tutor View</title>
+</head>
+
+<body>
+
+<h1>Active Requests</h1>
+<p>clicking on any of these puts you in the queue for the request.</p>
+<ul>
+{%for req in active_requests %}
+<li><a href="/accept-request/{{ req.id }}">{{req}}</a></li>
+
+{% endfor %}
+</ul>
+
+</body>
