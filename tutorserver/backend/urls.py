@@ -11,4 +11,5 @@ urlpatterns = [
     path('api/sessions', views.SessionListCreate.as_view()),
     path('api/requests', views.RequestListCreate.as_view()),
     path('api/tutors',   views.TutorListCreate.as_view()),
+    path('api/users', views.UserListCreate.as_view()),
 ]

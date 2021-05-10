@@ -3,14 +3,18 @@ from django.http import HttpResponse, HttpResponseRedirect
 from .models import Student, Tutor, Subject, SessionRequest, TutorSession
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
+from django.contrib.auth.models import User
 
 from rest_framework import generics
-from .serializers import SessionSerializer, RequestSerializer, StudentSerializer, TutorSerializer
+from .serializers import SessionSerializer, RequestSerializer, StudentSerializer, TutorSerializer, UserSerializer
 
 from .forms import SessionForm
 
 # API Views:
 
+class UserListCreate(generics.ListCreateAPIView):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
 
 class StudentListCreate(generics.ListCreateAPIView):
     queryset = Student.objects.all()
