@@ -1,4 +1,4 @@
-from django.urls import path
+from django.urls import path, include
 from . import views
 
 urlpatterns = [
@@ -12,4 +12,5 @@ urlpatterns = [
     path('api/requests', views.RequestListCreate.as_view()),
     path('api/tutors',   views.TutorListCreate.as_view()),
     path('api/users', views.UserListCreate.as_view()),
+    path('api-auth/', include('rest_framework.urls')),
 ]
