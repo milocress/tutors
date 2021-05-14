@@ -1,4 +1,5 @@
-from django.urls import path
+from django.urls import path, include
+from rest_framework.authtoken import views as auth_views
 from . import views
 
 urlpatterns = [
@@ -12,4 +13,6 @@ urlpatterns = [
     path('api/requests', views.RequestListCreate.as_view()),
     path('api/tutors',   views.TutorListCreate.as_view()),
     path('api/users', views.UserListCreate.as_view()),
+    path('api-auth/', include('rest_framework.urls')),
+    path('api-token-auth/', auth_views.obtain_auth_token),
 ]

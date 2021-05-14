@@ -12,9 +12,11 @@ from .forms import SessionForm
 
 # API Views:
 
+
 class UserListCreate(generics.ListCreateAPIView):
     queryset = User.objects.all()
     serializer_class = UserSerializer
+
 
 class StudentListCreate(generics.ListCreateAPIView):
     queryset = Student.objects.all()
@@ -40,6 +42,8 @@ def root_view(request):
     print(Student.objects.all())
     return HttpResponse("Index page")
 
+
+# Regular views
 
 @login_required
 def student_view(request):
