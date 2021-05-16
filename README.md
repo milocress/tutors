@@ -26,6 +26,7 @@ returns either an error message or a token.
 
 ## API Routes
 
+<<<<<<< HEAD
 Done:
 * `/api/students`
 * `/api/sessions`
@@ -47,6 +48,7 @@ See "Matching Algorithm" below.
 
 ## Models
 * `User` can be connected to a `Student` or `Tutor`, and describes attributes common to any user of the site (email, password, username, etc.)
+* `Subject` describes the possible subjects a student and tutor can discuss during a session.
 * `Student` describes student properties
 * `Tutor` describes tutor properties
 * `TutorSession` describes session properties, outcomes like rating, etc.
