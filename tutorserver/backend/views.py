@@ -6,6 +6,7 @@ from django.shortcuts import render
 from django.contrib.auth.models import User
 
 from rest_framework import generics
+from rest_framework.permissions import IsAuthenticated
 from .serializers import SessionSerializer, RequestSerializer, StudentSerializer, TutorSerializer, UserSerializer
 
 from .forms import SessionForm
@@ -16,26 +17,31 @@ from .forms import SessionForm
 class UserListCreate(generics.ListCreateAPIView):
     queryset = User.objects.all()
     serializer_class = UserSerializer
+    permission_classes = [IsAuthenticated]
 
 
 class StudentListCreate(generics.ListCreateAPIView):
     queryset = Student.objects.all()
     serializer_class = StudentSerializer
+    permission_classes = [IsAuthenticated]
 
 
 class TutorListCreate(generics.ListCreateAPIView):
     queryset = Tutor.objects.all()
     serializer_class = TutorSerializer
+    permission_classes = [IsAuthenticated]
 
 
 class SessionListCreate(generics.ListCreateAPIView):
     queryset = TutorSession.objects.all()
     serializer_class = SessionSerializer
+    permission_classes = [IsAuthenticated]
 
 
 class RequestListCreate(generics.ListCreateAPIView):
     queryset = SessionRequest.objects.all()
     serializer_class = RequestSerializer
+    permission_classes = [IsAuthenticated]
 
 
 def root_view(request):

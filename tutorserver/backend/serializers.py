@@ -2,10 +2,25 @@ from rest_framework import serializers
 from .models import Student, Tutor, TutorSession, SessionRequest, Subject
 from django.contrib.auth.models import User
 
+
 class UserSerializer(serializers.ModelSerializer):
+
+    password = serializers.CharField(write_only=True)
+
+    def create(self, validated_data):
+
+        user = User.objects.create_user(
+            username=validated_data['username'],
+            password=validated_data['password'],
+            email=validated_data['email'],
+        )
+
+        return user
+
     class Meta:
         model = User
         fields = 'email', 'username', 'password'
+
 
 class StudentSerializer(serializers.ModelSerializer):
     class Meta:
