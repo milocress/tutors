@@ -1,4 +1,4 @@
-# tutors (change name later)
+# TuteSuite
 
 # Architecture
 
