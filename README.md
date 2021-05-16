@@ -26,7 +26,6 @@ returns either an error message or a token.
 
 ## API Routes
 
-<<<<<<< HEAD
 Done:
 * `/api/students`
 * `/api/sessions`
