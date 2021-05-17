@@ -1,5 +1,12 @@
 # TuteSuite
 
+# Installation
+TuteSuite requires the following packages:
+
+`pip install django djangorestframework django-cors-headers`
+
+as well as Jitsi, see Jitsi's self hosting setup instructions.
+
 # Architecture
 
 ## Login Page
