@@ -58,7 +58,9 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.common.CommonMiddleware')
 
 CORS_ORIGIN_ALLOW_ALL = True
-CORS_ALLOW_CREDENTIALS = True
+# CORS_ALLOW_CREDENTIALS = True
+CORS_ALLOW_HEADERS = ['Content-Type']
+CORS_PREFLIGHT_MAX_AGE = 86400
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
