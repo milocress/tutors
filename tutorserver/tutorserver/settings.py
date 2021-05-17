@@ -52,6 +52,8 @@ INSTALLED_APPS = [
     'backend'
 ]
 
+MIDDLEWARE_CLASSES = ('backend.CorsMiddleware',)
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
