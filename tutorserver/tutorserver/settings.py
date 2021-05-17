@@ -37,6 +37,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+# SECURE_REFERRER_POLICY = 'no-referrer'
 
 # Application definition
 
