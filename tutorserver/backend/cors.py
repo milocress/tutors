@@ -10,8 +10,10 @@ class CorsMiddleware:
         response = self.get_response(request)
 
         response["Access-Control-Allow-Origin"] = "*"
-        # response["Access-Control-Allow-Credentials"] = "true"
+        response["Access-Control-Allow-Credentials"] = "true"
         response["Access-Control-Max-Age"] = 86400
+        response["Access-Control-Allow-Methods"] = "POST, GET, OPTIONS"
+        response["Access-Control-Allow-Headers"] = "Content-Type"
         # response.pop("Referrer-Policy", None)
 
         return response
