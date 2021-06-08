@@ -6,42 +6,61 @@ from django.shortcuts import render
 from django.contrib.auth.models import User
 
 from rest_framework import generics
+from rest_framework import viewsets, response
 from rest_framework.permissions import IsAuthenticated
 from .serializers import SessionSerializer, RequestSerializer, StudentSerializer, TutorSerializer, UserSerializer
 
 from .forms import SessionForm
 
+# Utility Functions:
+
+
+def is_tutor(request):
+    return list(request.user.tutor)
+
 # API Views:
 
 
-class UserListCreate(generics.ListCreateAPIView):
+class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
     permission_classes = [IsAuthenticated]
 
 
-class StudentListCreate(generics.ListCreateAPIView):
+class StudentViewSet(viewsets.ModelViewSet):
     queryset = Student.objects.all()
     serializer_class = StudentSerializer
     permission_classes = [IsAuthenticated]
 
 
-class TutorListCreate(generics.ListCreateAPIView):
+class TutorViewSet(viewsets.ModelViewSet):
     queryset = Tutor.objects.all()
     serializer_class = TutorSerializer
     permission_classes = [IsAuthenticated]
 
 
-class SessionListCreate(generics.ListCreateAPIView):
+class SessionViewSet(viewsets.ModelViewSet):
     queryset = TutorSession.objects.all()
     serializer_class = SessionSerializer
     permission_classes = [IsAuthenticated]
 
 
-class RequestListCreate(generics.ListCreateAPIView):
+class RequestViewSet(viewsets.ModelViewSet):
     queryset = SessionRequest.objects.all()
     serializer_class = RequestSerializer
     permission_classes = [IsAuthenticated]
+
+    def list(self, request):
+        istutor = is_tutor(request)
+        queryset = SessionRequest.objects.all()
+
+        if istutor:
+            tutor = istutor[0]
+            specialties = tutor.specialties
+            queryset = SessionRequest.objects.filter(subject__in=specialties)
+
+        serializer = RequestSerializer(queryset, many=True)
+        return response.Response(serializer.data)
 
 
 def root_view(request):
