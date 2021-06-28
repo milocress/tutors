@@ -1,0 +1,4 @@
+[submodule "tutorserver/tutesuite-frontend"]
+	path = tutorserver/tutesuite-frontend
+	url = git@github.com:zephyrys/tutesuite-frontend.git
+	branch = main
