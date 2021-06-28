@@ -1,14 +1,16 @@
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, JsonResponse, QueryDict
 
 from .models import Student, Tutor, Subject, SessionRequest, TutorSession
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 from django.contrib.auth.models import User
 
-from rest_framework import generics
 from rest_framework import viewsets, response
 from rest_framework.permissions import IsAuthenticated
-from .serializers import SessionSerializer, RequestSerializer, StudentSerializer, TutorSerializer, UserSerializer
+from rest_framework.decorators import permission_classes
+from .serializers import \
+    SessionSerializer, RequestSerializer, StudentSerializer, \
+    TutorSerializer, UserSerializer, SubjectSerializer
 
 from .forms import SessionForm
 
@@ -22,6 +24,14 @@ def is_tutor(request):
 
 
 class UserViewSet(viewsets.ModelViewSet):
+    def get_permissions(self):
+        if self.action == 'create':
+            my_permission_classes = []
+        else:
+            my_permission_classes = [IsAuthenticated]
+
+        return [permission() for permission in my_permission_classes]
+
     queryset = User.objects.all()
     serializer_class = UserSerializer
     permission_classes = [IsAuthenticated]
@@ -51,16 +61,49 @@ class RequestViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticated]
 
     def list(self, request):
-        istutor = is_tutor(request)
+        # istutor = is_tutor(request)
         queryset = SessionRequest.objects.all()
 
-        if istutor:
-            tutor = istutor[0]
-            specialties = tutor.specialties
-            queryset = SessionRequest.objects.filter(subject__in=specialties)
+        # if istutor:
+        #     tutor = istutor[0]
+        #     specialties = tutor.specialties
+        #     queryset = SessionRequest.objects.filter(subject__in=specialties)
 
         serializer = RequestSerializer(queryset, many=True)
         return response.Response(serializer.data)
+
+    def create(self, request, *args, **kwargs):
+        subject, _ = Subject.objects.get_or_create(name=request.data['subject'])
+        student = Student.objects.get(pk=request.data['student'])
+        my_request = SessionRequest.objects.create(description=request.data['description'],
+                                                   student=student, active=request.data['active'],
+                                                   subject=subject)
+
+        my_request.save()
+
+        serializer = RequestSerializer(my_request)
+        return response.Response(serializer.data)
+
+
+class SubjectViewSet(viewsets.ModelViewSet):
+    queryset = Subject.objects.all()
+    serializer_class = SubjectSerializer
+    permission_classes = [IsAuthenticated]
+
+
+@permission_classes([IsAuthenticated])
+def current_user_view(request):
+    user = request.user
+    print(user)
+    serializer = UserSerializer(user)
+    return JsonResponse(serializer.data)
+
+
+@permission_classes([IsAuthenticated])
+def get_user_by_username(request, username):
+    user = User.objects.get_by_natural_key(username)
+    serializer = UserSerializer(user)
+    return JsonResponse(serializer.data)
 
 
 def root_view(request):

@@ -21,18 +21,16 @@ class Subject(models.Model):
 
 
 class Student(models.Model):
-    name = models.CharField("name of student", max_length=50)
     user = models.ForeignKey(User,
                              on_delete=models.CASCADE,
                              related_name='student')
 
     class Meta:
-        unique_together = ['name']
-        ordering = ['name']
+        unique_together = ['user']
+        ordering = ['user']
 
 
 class Tutor(models.Model):
-    name = models.CharField("name of tutor", max_length=50)
     specialties = models.ManyToManyField(Subject,
                                          related_name="tutors")
     user = models.ForeignKey(User,
@@ -40,22 +38,8 @@ class Tutor(models.Model):
                              related_name='tutor')
 
     class Meta:
-        unique_together = ['name']
-        ordering = ['name']
-
-
-class TutorSession(models.Model):
-    start = models.DateTimeField(auto_now_add=True)
-    end = models.DateTimeField(auto_now_add=True)
-    rating = models.IntegerField()
-
-    tutor = models.ForeignKey(Tutor,
-                              on_delete=models.CASCADE,
-                              related_name='tutor_sessions')
-
-    student = models.ForeignKey(Student,
-                                on_delete=models.CASCADE,
-                                related_name='student_sessions')
+        unique_together = ['user']
+        ordering = ['user']
 
 
 class SessionRequest(models.Model):
@@ -74,3 +58,23 @@ class SessionRequest(models.Model):
         related_name="accepted_sessions")
 
     active = models.BooleanField()
+
+    description = models.CharField('symptom description', max_length=200)
+
+
+class TutorSession(models.Model):
+    start = models.DateTimeField(auto_now_add=True)
+    end = models.DateTimeField(auto_now_add=True)
+    rating = models.IntegerField()
+
+    tutor = models.ForeignKey(Tutor,
+                              on_delete=models.CASCADE,
+                              related_name='tutor_sessions')
+
+    student = models.ForeignKey(Student,
+                                on_delete=models.CASCADE,
+                                related_name='student_sessions')
+
+    request = models.ForeignKey(SessionRequest,
+                                on_delete=models.CASCADE,
+                                related_name='session')

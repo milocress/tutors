@@ -13,6 +13,8 @@ router.register(r'requests', views.RequestViewSet, basename='requests')
 
 urlpatterns = [
     path('api/', include(router.urls)),
+    path('api/current-user/', views.current_user_view),
+    path('api/username/<str:username>/', views.get_user_by_username),
     path('api/token-auth/', auth_views.obtain_auth_token),
 
     # path('api/students', views.StudentListCreate.as_view()),
