@@ -36,7 +36,7 @@ SECRET_KEY = '5#+bi-v3zkm#$fepn@!&au0pxsem&+-i!3_a+l4+g4#5s@57jt'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['tutesuite-backend.herokuapp.com']
 
 # SECURE_REFERRER_POLICY = 'no-referrer'
 
