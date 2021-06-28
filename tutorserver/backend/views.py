@@ -107,8 +107,7 @@ def get_user_by_username(request, username):
 
 
 def root_view(request):
-    print(Student.objects.all())
-    return HttpResponse("Index page")
+    return render("Index page")
 
 
 # Regular views

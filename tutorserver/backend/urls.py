@@ -27,7 +27,7 @@ urlpatterns = [
     # path('api-auth/', include('rest_framework.urls')),
 
     # Non-api views
-    # path('', views.root_view),
+    path('', views.root_view),
     # path('student/', views.student_view),
     # path('tutor/', views.tutor_view),
     # path('request/<int:rid>/', views.request_view),

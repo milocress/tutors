@@ -17,6 +17,12 @@ class UserSerializer(serializers.ModelSerializer):
         user.last_name = validated_data['last_name']
 
         user.save()
+
+        student = Student(user=user)
+        tutor = Tutor(user=user)
+        student.save()
+        tutor.save()
+
         return user
 
     class Meta:
