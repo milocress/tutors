@@ -134,4 +134,6 @@ USE_TZ = True
 STATIC_URL = '/frontend/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'tutesuite-frontend/build')
 
+DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
+
 django_heroku.settings(locals())
