@@ -25,6 +25,8 @@ class Student(models.Model):
                              on_delete=models.CASCADE,
                              related_name='student')
 
+    amount_owed = models.FloatField(default=0)
+
     class Meta:
         unique_together = ['user']
         ordering = ['user']

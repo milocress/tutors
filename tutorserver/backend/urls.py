@@ -16,7 +16,9 @@ urlpatterns = [
     path('api/current-user/', views.current_user_view),
     path('api/username/<str:username>/', views.get_user_by_username),
     path('api/token-auth/', auth_views.obtain_auth_token),
-
+    path('api/accept/<int:rid>/<int:tid>', views.accept),
+    path('api/end_session/<int:sid>', views.end_session),
+    path('api/clear_balance/<int:sid>', views.clear_balance),
     # path('api/students', views.StudentListCreate.as_view()),
     # path('api/sessions', views.SessionListCreate.as_view()),
     # path('api/requests', views.RequestListCreate.as_view()),

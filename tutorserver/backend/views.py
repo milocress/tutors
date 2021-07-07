@@ -1,4 +1,5 @@
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse, QueryDict
+from django.views.decorators.csrf import csrf_exempt
 
 from .models import Student, Tutor, Subject, SessionRequest, TutorSession
 from django.contrib.auth.decorators import login_required
@@ -13,6 +14,8 @@ from .serializers import \
     TutorSerializer, UserSerializer, SubjectSerializer
 
 from .forms import SessionForm
+
+from datetime import datetime
 
 # Utility Functions:
 
@@ -104,6 +107,43 @@ def get_user_by_username(request, username):
     user = User.objects.get_by_natural_key(username)
     serializer = UserSerializer(user)
     return JsonResponse(serializer.data)
+
+
+@csrf_exempt
+def accept(request, rid, tid):
+    request = SessionRequest.objects.get(pk=rid)
+    tutor = Tutor.objects.get(pk=tid)
+    request.accepted_tutors.add(tutor)
+    request.save()
+    session = TutorSession(student=request.student, tutor=tutor, request=request, rating=-1)
+    session.save()
+    serializer = SessionSerializer(session)
+    return JsonResponse(serializer.data)
+
+
+@csrf_exempt
+def end_session(request, sid):
+    session = TutorSession.objects.get(pk=sid)
+    session.end = datetime.utcnow()
+    session.save()
+
+    naive = session.start.replace(tzinfo=None)
+
+    delta = session.end - naive
+
+    session.student.amount_owed += delta.total_seconds()
+    session.student.save()
+
+    serializer = SessionSerializer(session)
+    return JsonResponse(serializer.data)
+
+
+@csrf_exempt
+def clear_balance(request, sid):
+    student = Student.objects.get(pk=sid)
+    student.amount_owed = 0
+    student.save()
+    return HttpResponse(status=200)
 
 
 def root_view(request):

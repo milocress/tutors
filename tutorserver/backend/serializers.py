@@ -40,7 +40,7 @@ class UserPublicSerializer(serializers.ModelSerializer):
 class StudentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Student
-        fields = 'student_sessions', 'user', 'pk'
+        fields = 'student_sessions', 'user', 'pk', 'amount_owed'
         depth = 1
 
 
@@ -49,7 +49,7 @@ class StudentPublicSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Student
-        fields = '__all__'
+        fields = 'user', 'pk'
 
 
 class TutorSerializer(serializers.ModelSerializer):
@@ -62,7 +62,7 @@ class TutorSerializer(serializers.ModelSerializer):
 class SessionSerializer(serializers.ModelSerializer):
     class Meta:
         model = TutorSession
-        fields = 'tutor', 'student', 'start', 'end', 'rating', 'pk'
+        fields = 'tutor', 'student', 'start', 'end', 'rating', 'pk', 'id'
 
 
 class SubjectSerializer(serializers.ModelSerializer):
@@ -76,5 +76,5 @@ class RequestSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = SessionRequest
-        fields = '__all__'
+        fields = 'subject', 'student', 'date', 'accepted_tutors', 'session', 'description', 'active', 'pk', 'id'
         depth = 1
