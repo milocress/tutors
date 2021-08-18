@@ -146,6 +146,26 @@ def clear_balance(request, sid):
     return HttpResponse(status=200)
 
 
+@csrf_exempt
+def rate(request, sid, rating):
+    sess = TutorSession.objects.get(pk=sid)
+    sess.rating = rating
+    sess.save()
+    return HttpResponse(status=200)
+
+
+@csrf_exempt
+def past_sessions(request, sid):
+    student = Student.objects.get(pk=sid)
+    sessions = student.student_sessions.all()
+    data = []
+
+    for session in sessions:
+        data.append(SessionSerializer(session).data)
+
+    return JsonResponse(data={'sessions': data})
+
+
 def root_view(request):
     return render("Index page")
 

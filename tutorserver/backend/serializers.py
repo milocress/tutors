@@ -62,7 +62,8 @@ class TutorSerializer(serializers.ModelSerializer):
 class SessionSerializer(serializers.ModelSerializer):
     class Meta:
         model = TutorSession
-        fields = 'tutor', 'student', 'start', 'end', 'rating', 'pk', 'id'
+        fields = 'tutor', 'student', 'start', 'end', 'rating', 'pk', 'id', 'request', 'report'
+        depth = 1
 
 
 class SubjectSerializer(serializers.ModelSerializer):

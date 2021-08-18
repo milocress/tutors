@@ -19,6 +19,8 @@ urlpatterns = [
     path('api/accept/<int:rid>/<int:tid>', views.accept),
     path('api/end_session/<int:sid>', views.end_session),
     path('api/clear_balance/<int:sid>', views.clear_balance),
+    path('api/rate/<int:sid>/<int:rating>', views.rate),
+    path('api/past_sessions/<int:sid>', views.past_sessions),
     # path('api/students', views.StudentListCreate.as_view()),
     # path('api/sessions', views.SessionListCreate.as_view()),
     # path('api/requests', views.RequestListCreate.as_view()),

@@ -80,3 +80,5 @@ class TutorSession(models.Model):
     request = models.ForeignKey(SessionRequest,
                                 on_delete=models.CASCADE,
                                 related_name='session')
+
+    report = models.CharField('report text', max_length=500, default="")
