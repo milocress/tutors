@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Student, Tutor, TutorSession, SessionRequest, Subject
+from .models import Student, Tutor, TutorSession, SessionRequest, Subject, Invite
 from django.contrib.auth.models import User
 
 
@@ -29,6 +29,12 @@ class UserSerializer(serializers.ModelSerializer):
         model = User
         fields = 'email', 'username', 'password', 'student', 'tutor', 'pk', 'first_name', 'last_name'
         depth = 1
+
+
+class InviteSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Invite
+        fields = 'key', 'is_active'
 
 
 class UserPublicSerializer(serializers.ModelSerializer):

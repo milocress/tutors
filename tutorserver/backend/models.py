@@ -12,6 +12,15 @@ def create_auth_token(sender, instance=None, created=False, **kwargs):
         Token.objects.create(user=instance)
 
 
+class Invite(models.Model):
+    key = models.CharField("invite key", max_length=10)
+    is_active = models.BooleanField("is invite active", default=True)
+
+    class Meta:
+        unique_together = ['key']
+        ordering = ['key']
+
+
 class Subject(models.Model):
     name = models.CharField("name of subject", max_length=50)
 

@@ -1,7 +1,7 @@
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse, QueryDict
 from django.views.decorators.csrf import csrf_exempt
 
-from .models import Student, Tutor, Subject, SessionRequest, TutorSession
+from .models import Student, Tutor, Subject, SessionRequest, TutorSession, Invite
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 from django.contrib.auth.models import User
@@ -11,7 +11,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.decorators import permission_classes
 from .serializers import \
     SessionSerializer, RequestSerializer, StudentSerializer, \
-    TutorSerializer, UserSerializer, SubjectSerializer
+    TutorSerializer, UserSerializer, SubjectSerializer, InviteSerializer
 
 from .forms import SessionForm
 
@@ -24,6 +24,14 @@ def is_tutor(request):
     return list(request.user.tutor)
 
 # API Views:
+
+
+def is_valid_invite_key(request, key):
+    try:
+        k = Invite.objects.get(key=key)
+        return k.is_active
+    except Invite.DoesNotExist:
+        return False
 
 
 class UserViewSet(viewsets.ModelViewSet):
